@@ -14,25 +14,29 @@ use yii\base\Model;
 
 class AboutDoctorForm extends Model
 {
-    public $diseaseName;
+    public $diseaseNames = array();
 
     public function rules(){
-        return [[['diseaseName'], 'required']];
+
+        return [//'diseaseNamesLength' => ['diseaseNames','each', 'string', 'min' => 2, 'max' => 40],
+            //'diseaseNamesPattern' => ['diseaseNames','each', 'match', 'pattern' => '/^[a-z\s]+$/'],
+            ['diseaseNames', 'each', 'rule' => ['pattern' => '/^[a-z\s]+$/']],
+            ];
     }
 
     public function attributeLabels()
     {
         return [
-            'diseaseName' => 'Choroba',
+            'diseaseNames' => 'Choroba',
         ];
     }
 
 
     public function save(){
 
-       // if (!$this->validate()) {
-        //    return false;
-       // }
+        if (!$this->validate()) {
+            return false;
+       }
 
         $disease = new Disease();
        // $doctor = new Doctor();
@@ -45,10 +49,18 @@ class AboutDoctorForm extends Model
         $doctorId = $doctor->id;
         //$this->loadAttributes($disease);
 
-        $disease->name = $this->attributes['diseaseName'];
+        foreach ($this->attributes['diseaseNames'] as $diseaseName) {
+            $disease->name = $diseaseName;
+            $disease->doctor_id = $doctorId;
+            $disease->save();
+        }
+
+        /* odkomentować
+        $disease->name = $this->attributes['diseaseNames'];
         $disease->doctor_id = $doctorId;
 
         $disease->save();
+        */
 
         return true;
 
