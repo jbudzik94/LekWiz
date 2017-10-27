@@ -15,6 +15,7 @@ use app\models\City;
  * @property integer $main_category_id
  * @property integer $visit_type_id
  * @property string $phone
+ * @property string $degree_id
  *
  * @property User $user
  * @property MainCategory $mainCategory
@@ -40,6 +41,7 @@ class Doctor extends \yii\db\ActiveRecord
             [['user_id', 'city_id', 'main_category_id', 'visit_type_id', 'phone'], 'required'],
             [['user_id', 'city_id', 'main_category_id', 'visit_type_id'], 'integer'],
             [['phone'], 'string', 'max' => 20],
+            [['degree_id'], 'integer'],
             [['user_id'], 'unique'],
             //[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             //[['main_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => MainCategory::className(), 'targetAttribute' => ['main_category_id' => 'id']],
@@ -59,6 +61,7 @@ class Doctor extends \yii\db\ActiveRecord
             'main_category_id' => 'Main Category ID',
             'visit_type_id' => 'Visit Type ID',
             'phone' => 'Phone',
+            'degree_id' => 'Degree ID'
         ];
     }
 

@@ -10,21 +10,37 @@ $config = [
      'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',
+            'admins' => ['jbudzik94@gmail.com', 'joanna30000@onet.pl'],
            // 'modelMap' => [
            //     'User' => 'app\models\User',
            // ],
+            'enableAccountDelete' => 'true',
 
 
-
-           'controllerMap' => [
+           /**'controllerMap' => [
                 'registration' => [
                     'class' => \dektrium\user\controllers\RegistrationController::className(),
                     'on ' . \dektrium\user\controllers\RegistrationController::EVENT_AFTER_CONFIRM=> function ($e) {
-                        Yii::$app->response->redirect(array('/site/index'))->send();
-                        Yii::$app->end();
+                        $userId = \Yii::$app->user->getId();
+                       // $doctor = \app\models\Doctor::find()->where(['user_id' => $userId])->exists();
+
+                       // $role = UserDetails::find()->where(['user_id'=>$userId])->one()->role;
+
+                        $role = \app\models\UserDetails::find(['user_id' => $userId])->one()->role;
+                        //$doctorId = $doctor->id;
+                        if($role == 'pacjent'){
+                            Yii::$app->response->redirect(array('/site/about'))->send();
+                            Yii::$app->end();
+                        }
+                        else{
+                           Yii::$app->response->redirect(array('/site/contact'))->send();
+                            Yii::$app->end();
+                        }
+
                     }
                 ],
-            ],
+            ],*/
+
         ],
     ],
     'components' => [
@@ -47,6 +63,7 @@ $config = [
        // 'user' => [
        //     'identityClass' => 'app\models\User',
        //     'enableAutoLogin' => true,
+
        // ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -65,7 +82,7 @@ $config = [
                 'encryption' => 'tls',
 
             ],
-            
+
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

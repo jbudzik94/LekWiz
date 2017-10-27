@@ -5,21 +5,22 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "photo".
+ * This is the model class for table "profile_photo".
  *
+ * @property integer $id
  * @property integer $doctor_id
- * @property string $path
+ * @property string $name
  *
  * @property Doctor $doctor
  */
-class Photo extends \yii\db\ActiveRecord
+class ProfilePhoto extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'photo';
+        return 'profile_photo';
     }
 
     /**
@@ -28,9 +29,9 @@ class Photo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['doctor_id', 'path'], 'required'],
+            [['doctor_id', 'name'], 'required'],
             [['doctor_id'], 'integer'],
-            [['path'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
             [['doctor_id'], 'exist', 'skipOnError' => true, 'targetClass' => Doctor::className(), 'targetAttribute' => ['doctor_id' => 'id']],
         ];
     }
@@ -41,8 +42,9 @@ class Photo extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
+            'id' => 'ID',
             'doctor_id' => 'Doctor ID',
-            'path' => 'Path',
+            'name' => 'Name',
         ];
     }
 

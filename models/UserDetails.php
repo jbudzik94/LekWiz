@@ -64,7 +64,6 @@ class UserDetails extends \yii\db\ActiveRecord
     {
 
         $this->user_id = $userID;
-       // $this->role = 'pacjent';
 
         if (!$this->validate()) {
             return false;

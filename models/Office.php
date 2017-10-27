@@ -16,6 +16,8 @@ use Yii;
  *
  * @property City $city
  * @property Doctor $doctor
+ * @property OfficePhoto[] $officePhotos
+ * @property Service[] $services
  */
 class Office extends \yii\db\ActiveRecord
 {
@@ -73,25 +75,19 @@ class Office extends \yii\db\ActiveRecord
         return $this->hasOne(Doctor::className(), ['id' => 'doctor_id']);
     }
 
-    public function saveOffice($userID)
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOfficePhotos()
     {
+        return $this->hasMany(OfficePhoto::className(), ['office_id' => 'id']);
+    }
 
-        $this->doctor_id = $userID;
-
-        if (!$this->validate()) {
-            return false;
-        }
-
-        $transaction = $this->getDb()->beginTransaction();
-
-        if (!$this->save()) {
-            $transaction->rollBack();
-            return false;
-        }
-
-        $transaction->commit();
-
-        return true;
-
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getServices()
+    {
+        return $this->hasMany(Service::className(), ['office_id' => 'id']);
     }
 }
