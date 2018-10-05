@@ -8,6 +8,9 @@ $config = [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'app\commands',
+    'modules' => [
+    'rbac' => 'dektrium\rbac\RbacConsoleModule',
+    ],
     'components' => [
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -39,6 +42,8 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
     ];
+
+
 }
 
 return $config;

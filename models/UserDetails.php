@@ -89,6 +89,9 @@ class UserDetails extends \yii\db\ActiveRecord
 
     }
 
-
+    public static function primaryKey()
+    {
+        return ['name'];
+    }
 
 }

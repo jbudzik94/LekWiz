@@ -7,39 +7,40 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-     'modules' => [
+    'modules' => [
+        'rbac' => 'dektrium\rbac\RbacWebModule',
         'user' => [
             'class' => 'dektrium\user\Module',
-            'admins' => ['jbudzik94@gmail.com', 'joanna30000@onet.pl'],
-           // 'modelMap' => [
-           //     'User' => 'app\models\User',
-           // ],
+            'admins' => ['lolaperolez4@niepodam.pl', 'lolaperolez7@niepodam.pl'],
+            // 'modelMap' => [
+            //     'User' => 'app\models\User',
+            // ],
             'enableAccountDelete' => 'true',
 
 
-           /**'controllerMap' => [
-                'registration' => [
-                    'class' => \dektrium\user\controllers\RegistrationController::className(),
-                    'on ' . \dektrium\user\controllers\RegistrationController::EVENT_AFTER_CONFIRM=> function ($e) {
-                        $userId = \Yii::$app->user->getId();
-                       // $doctor = \app\models\Doctor::find()->where(['user_id' => $userId])->exists();
-
-                       // $role = UserDetails::find()->where(['user_id'=>$userId])->one()->role;
-
-                        $role = \app\models\UserDetails::find(['user_id' => $userId])->one()->role;
-                        //$doctorId = $doctor->id;
-                        if($role == 'pacjent'){
-                            Yii::$app->response->redirect(array('/site/about'))->send();
-                            Yii::$app->end();
-                        }
-                        else{
-                           Yii::$app->response->redirect(array('/site/contact'))->send();
-                            Yii::$app->end();
-                        }
-
-                    }
-                ],
-            ],*/
+            /**'controllerMap' => [
+             * 'registration' => [
+             * 'class' => \dektrium\user\controllers\RegistrationController::className(),
+             * 'on ' . \dektrium\user\controllers\RegistrationController::EVENT_AFTER_CONFIRM=> function ($e) {
+             * $userId = \Yii::$app->user->getId();
+             * // $doctor = \app\models\Doctor::find()->where(['user_id' => $userId])->exists();
+             *
+             * // $role = UserDetails::find()->where(['user_id'=>$userId])->one()->role;
+             *
+             * $role = \app\models\UserDetails::find(['user_id' => $userId])->one()->role;
+             * //$doctorId = $doctor->id;
+             * if($role == 'pacjent'){
+             * Yii::$app->response->redirect(array('/site/about'))->send();
+             * Yii::$app->end();
+             * }
+             * else{
+             * Yii::$app->response->redirect(array('/site/contact'))->send();
+             * Yii::$app->end();
+             * }
+             *
+             * }
+             * ],
+             * ],*/
 
         ],
     ],
@@ -60,11 +61,11 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-       // 'user' => [
-       //     'identityClass' => 'app\models\User',
-       //     'enableAutoLogin' => true,
+        // 'user' => [
+        //     'identityClass' => 'app\models\User',
+        //     'enableAutoLogin' => true,
 
-       // ],
+        // ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -75,12 +76,21 @@ $config = [
             // for the mailer to send real emails.
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
-                'host' => 'smtp.gmail.com',
+                 'host' => 'smtp.gmail.com',
+                //'host' => '64.233.171.108',
                 'username' => 'jbudzik94@gmail.com',
                 'password' => 'highroller1',
-                'port' => '587',
-                'encryption' => 'tls',
-
+                //'port' => '587',
+               // 'encryption' => 'tls',
+                'port' => '465',
+                //'port' => '26',
+                'encryption' => 'ssl',
+                'streamOptions' => ['ssl' =>
+                    ['allow_self_signed' => true,
+                        'verify_peer' => false,
+                        'verify_peer_name' => false,
+                    ],
+                ]
             ],
 
         ],
@@ -94,27 +104,22 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
-        ],
-        */
+
+
     ],
     'params' => $params,
 ];
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
+   /* $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
         //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
+    ];*/
 
+    $config['name'] = 'LekWiz';
     $config['bootstrap'][] = 'gii';
     $config['language'] = 'pl';
     $config['modules']['gii'] = [

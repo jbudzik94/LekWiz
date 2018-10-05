@@ -47,8 +47,5 @@ class City extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDoctors()
-    {
-        return $this->hasMany(Doctor::className(), ['city_id' => 'id']);
-    }
+
 }

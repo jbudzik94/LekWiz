@@ -5,22 +5,25 @@ namespace app\models;
 use Yii;
 use app\models\MainCategory;
 use app\models\VisitType;
-use app\models\City;
+
 
 /**
  * This is the model class for table "doctor".
  *
  * @property integer $user_id
- * @property integer $city_id
+
  * @property integer $main_category_id
  * @property integer $visit_type_id
  * @property string $phone
  * @property string $degree_id
+ * @property string $rating
+ * @property string $rating_number
+ *
  *
  * @property User $user
  * @property MainCategory $mainCategory
  * @property VisitType $visitType
- * @property City $city
+
  */
 class Doctor extends \yii\db\ActiveRecord
 {
@@ -38,9 +41,10 @@ class Doctor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'city_id', 'main_category_id', 'visit_type_id', 'phone'], 'required'],
-            [['user_id', 'city_id', 'main_category_id', 'visit_type_id'], 'integer'],
-            [['phone'], 'string', 'max' => 20],
+            [['user_id', 'main_category_id'], 'required'],
+            [['user_id', 'main_category_id'], 'integer'],
+            [['rating'], 'double'],
+           // [['phone'], 'string', 'max' => 20],
             [['degree_id'], 'integer'],
             [['user_id'], 'unique'],
             //[['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -57,10 +61,10 @@ class Doctor extends \yii\db\ActiveRecord
     {
         return [
             'user_id' => 'User ID',
-            'city_id' => 'City ID',
+
             'main_category_id' => 'Main Category ID',
-            'visit_type_id' => 'Visit Type ID',
-            'phone' => 'Phone',
+           // 'visit_type_id' => 'Visit Type ID',
+            //'phone' => 'Phone',
             'degree_id' => 'Degree ID'
         ];
     }
@@ -84,18 +88,15 @@ class Doctor extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getVisitType()
+   /* public function getVisitType()
     {
         return $this->hasOne(VisitType::className(), ['id' => 'visit_type_id']);
-    }
+    }*/
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCity()
-    {
-        return $this->hasOne(City::className(), ['id' => 'city_id']);
-    }
+
 
     public function saveDoctor($userID)
     {
@@ -116,5 +117,15 @@ class Doctor extends \yii\db\ActiveRecord
 
         return true;
 
+    }
+
+    public function getOfficesId($userId){
+        $doctor = Doctor::find()->where(["user_id" => $userId])->one();
+        $offices = Office::find()->where(["doctor_id"=>$doctor->id])->all();
+        $officesId = array();
+        foreach ($offices as $office){
+            array_push($officesId, $office->id);
+        }
+        return $officesId;
     }
 }

@@ -30,7 +30,7 @@ class Service extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['office_id', 'name', 'price'], 'required'],
+            [['office_id', 'name'], 'required'],
             [['office_id', 'price'], 'integer'],
             [['name'], 'string', 'max' => 100],
             [['office_id'], 'exist', 'skipOnError' => true, 'targetClass' => Office::className(), 'targetAttribute' => ['office_id' => 'id']],
@@ -57,5 +57,10 @@ class Service extends \yii\db\ActiveRecord
     public function getOffice()
     {
         return $this->hasOne(Office::className(), ['id' => 'office_id']);
+    }
+
+    public function getNameWithPrice()
+    {
+        return $this->name.' - '.$this->price.' zł';
     }
 }
